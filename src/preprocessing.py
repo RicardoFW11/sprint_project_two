@@ -55,6 +55,18 @@ def preprocess_data(
     #     OneHotEncoder classes, then use the fitted models to transform all the
     #     datasets.
 
+    # Get categorical columns
+    cat_columns = working_train_df.select_dtypes(include="object").columns
+    
+    # Calculate categorical features that has 2 categories
+    categorical_two_cat = [
+        col for col in cat_columns if working_train_df[col].nunique() == 2
+    ]
+    
+    # Calculate categorical features that has more 2 categories
+    categorical_more_than_two = [
+        col for col in cat_columns if working_train_df[col].nunique() > 2
+    ]
 
     # 3. TODO Impute values for all columns with missing data or, just all the columns.
     # Use median as imputing value. Please use sklearn.impute.SimpleImputer().
@@ -65,7 +77,6 @@ def preprocess_data(
     #     working_train_df DataFrame to fit the SimpleImputer and then use the fitted
     #     model to transform all the datasets.
 
-
     # 4. TODO Feature scaling with Min-Max scaler. Apply this to all the columns.
     # Please use sklearn.preprocessing.MinMaxScaler().
     # Again, take into account that:
@@ -74,6 +85,5 @@ def preprocess_data(
     #   - In order to prevent overfitting and avoid Data Leakage you must use only
     #     working_train_df DataFrame to fit the MinMaxScaler and then use the fitted
     #     model to transform all the datasets.
-
 
     return None

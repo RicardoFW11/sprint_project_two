@@ -25,16 +25,22 @@ def get_datasets() -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     # Download HomeCredit_columns_description.csv
     if not os.path.exists(config.DATASET_DESCRIPTION):
         gdown.download(
-            config.DATASET_DESCRIPTION_URL, config.DATASET_DESCRIPTION, quiet=False
+            config.DATASET_DESCRIPTION_URL,
+            config.DATASET_DESCRIPTION,
+            quiet=False,
         )
 
     # Download application_test_aai.csv
     if not os.path.exists(config.DATASET_TEST):
-        gdown.download(config.DATASET_TEST_URL, config.DATASET_TEST, quiet=False)
+        gdown.download(
+            config.DATASET_TEST_URL, config.DATASET_TEST, quiet=False
+        )
 
     # Download application_train_aai.csv
     if not os.path.exists(config.DATASET_TRAIN):
-        gdown.download(config.DATASET_TRAIN_URL, config.DATASET_TRAIN, quiet=False)
+        gdown.download(
+            config.DATASET_TRAIN_URL, config.DATASET_TRAIN, quiet=False
+        )
 
     app_train = pd.read_csv(config.DATASET_TRAIN)
     app_test = pd.read_csv(config.DATASET_TEST)
@@ -67,14 +73,17 @@ def get_feature_target(
         y_test : pd.Series
             Test target
     """
-    X_train, y_train, X_test, y_test = None, None, None, None
+    # X_train, y_train, X_test, y_test = None, None, None, None
 
     # TODO
     # Assign to X_train all the columns from app_train except "TARGET"
+    X_train = app_train.drop(columns=["TARGET"])
     # Assign to y_train the "TARGET" column
+    y_train = app_train["TARGET"]
     # Assign to X_test all the columns from app_test except "TARGET"
+    X_test = app_test.drop(columns=["TARGET"])
     # Assign to y_test the "TARGET" column
-
+    y_test = app_test["TARGET"]
 
     return X_train, y_train, X_test, y_test
 
@@ -101,7 +110,7 @@ def get_train_val_sets(
         y_val : pd.Series
             Validation target
     """
-    X_train, X_val, y_train, y_val = None, None, None, None
+    # X_train, X_val, y_train, y_val = None, None, None, None
 
     # TODO
     # Use the `sklearn.model_selection.train_test_split` function with
@@ -111,6 +120,8 @@ def get_train_val_sets(
     # Assign a seed so we get reproducible output across multiple function
     # calls (see `random_state` parameter in `train_test_split`).
     # Shuffle the data (see `shuffle` parameter in `train_test_split`).
-
+    X_train, X_val, y_train, y_val = train_test_split(
+        X_train, y_train, test_size=0.20, shuffle=True, random_state=42
+    )
 
     return X_train, X_val, y_train, y_val
