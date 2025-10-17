@@ -206,4 +206,4 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-/dataset/application_train_aai.csv
+dataset/application_train_aai.csv
